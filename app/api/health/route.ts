@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { databaseHealth } from '@/lib/mongodb';
-import { MONGODB_DATABASE } from '@/lib/env';
+import { firebaseHealth } from '@/lib/firebase';
+import { FIREBASE_PROJECT_ID } from '@/lib/env';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -9,14 +9,14 @@ export const runtime = 'nodejs';
  * Unauthenticated liveness probe used by uptime monitors.
  *
  * `ok` reflects service health, not merely reachability: a healthy deployment
- * answers 200 with `ok: true`, a deployment that cannot reach Atlas answers 503
- * with `ok: false` and a short reason. Never exposes the connection string —
- * only the logical database name and the resolved state.
+ * answers 200 with `ok: true`, a deployment that cannot reach Firebase
+ * answers 503 with `ok: false` and a short reason. Never exposes any secret —
+ * only the resolved Firebase project and state.
  */
 export async function GET() {
-  const health = await databaseHealth();
+  const health = await firebaseHealth();
   const body = {
-    database: MONGODB_DATABASE,
+    database: FIREBASE_PROJECT_ID,
     configured: health.configured,
     connected: health.connected,
     state: health.state,

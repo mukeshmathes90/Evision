@@ -17,7 +17,7 @@ const LINK_HEX: Record<string, string> = {
 /**
  * Live telemetry strip for the marketing hero. Values come from the same
  * server-side aggregation as the dashboard, so the landing page never invents
- * numbers and reflects the live MongoDB state (or the labelled demo).
+ * numbers and reflects the live Firebase state (or the labelled demo).
  */
 export function HeroTelemetryStrip({
   initial,
@@ -94,7 +94,7 @@ export function HeroTelemetryStrip({
       label: 'Traction bus',
       value: latest ? fmtPower(absOrNull(latest.vehicle.power)) : EM,
       unit: latest ? fmtPowerUnit(latest.vehicle.power) : '',
-      sub: latest ? `${fmt(latest.vehicle.voltage)} V Â· ${fmt(latest.vehicle.current)} A` : 'awaiting frame',
+      sub: latest ? `${fmt(latest.vehicle.voltage)} V · ${fmt(latest.vehicle.current)} A` : 'awaiting frame',
     },
   ];
 
@@ -111,7 +111,7 @@ export function HeroTelemetryStrip({
           {demo ? <span className="chip border-sun-500/40 bg-sun-500/10 text-sun-400">Demo dataset</span> : null}
         </div>
         <span className="font-mono text-[9.5px] uppercase tracking-[0.16em] text-ink-500">
-          MongoDB Atlas Â· {env?.generatedAt ? env.generatedAt.replace('T', ' ').slice(0, 19) : EM} UTC
+          Firebase RTDB · {env?.generatedAt ? env.generatedAt.replace('T', ' ').slice(0, 19) : EM} UTC
         </span>
       </div>
 

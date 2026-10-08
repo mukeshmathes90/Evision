@@ -10,7 +10,7 @@ import { HARDWARE, PRODUCT, THRESHOLDS } from '@/lib/constants';
 export const metadata: Metadata = {
   title: `System Architecture · ${PRODUCT.name}`,
   description:
-    'How EVISION AI moves telemetry: PZEM-017 energy meters and DS18B20 probes into an ESP32-S3, edge AI inference on-node, a direct HTTPS write into MongoDB Atlas, and server-side aggregation for the web platform.',
+    'How EVISION AI moves telemetry: PZEM-017 energy meters and DS18B20 probes into an ESP32-S3, edge AI inference on-node, a direct write into Firebase Realtime Database, and server-side aggregation for the web platform.',
   alternates: { canonical: '/architecture' },
 };
 
@@ -28,7 +28,7 @@ const LAYERS = [
   {
     icon: Network,
     title: 'Direct ingest',
-    body: 'The firmware writes the telemetry document straight into the MongoDB Atlas cluster over TLS. Because the write path bypasses the web tier, ingest availability is independent of application deploys and traffic spikes. A MicroSD ring buffer covers connectivity gaps.',
+    body: 'The firmware writes the telemetry document straight into the Firebase Realtime Database over TLS. Because the write path bypasses the web tier, ingest availability is independent of application deploys and traffic spikes. A MicroSD ring buffer covers connectivity gaps.',
   },
   {
     icon: Database,
@@ -60,7 +60,7 @@ export default function ArchitecturePage() {
               </h1>
               <p className="mt-6 max-w-2xl text-[14px] leading-relaxed text-ink-300">
                 EVISION AI is deliberately small: sensing and inference happen on the vehicle, persistence is a document in
-                MongoDB Atlas, and the web platform is a pure read-and-aggregate consumer. Fewer moving parts on the ingest path
+                Firebase Realtime Database, and the web platform is a pure read-and-aggregate consumer. Fewer moving parts on the ingest path
                 means better uptime and easier forensics.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">

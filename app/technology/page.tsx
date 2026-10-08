@@ -21,7 +21,7 @@ import { AI_MODELS, HARDWARE, PRODUCT, THRESHOLDS } from '@/lib/constants';
 export const metadata: Metadata = {
   title: `Technology · ${PRODUCT.name}`,
   description:
-    'Instrumentation, protocols, edge AI runtime and web stack behind EVISION AI: PZEM-017 Modbus-RTU channels, DS18B20 thermal sensing, TFLite Micro inference on ESP32-S3 and a MongoDB Atlas time-series backbone.',
+    'Instrumentation, protocols, edge AI runtime and web stack behind EVISION AI: PZEM-017 Modbus-RTU channels, DS18B20 thermal sensing, TFLite Micro inference on ESP32-S3 and a Firebase Realtime Database time-series backbone.',
   alternates: { canonical: '/technology' },
 };
 
@@ -75,7 +75,7 @@ const STACK = [
     icon: Database,
     title: 'Persistence',
     items: [
-      'MongoDB Atlas cluster, direct firmware insert into `telemetry`',
+      'Firebase Realtime Database, direct firmware write into `telemetry`',
       'Compound `{ deviceId, timestamp }` index on every time-series collection',
       'Server-side aggregation with a pooled Mongoose connection',
     ],
@@ -254,7 +254,7 @@ export default function TechnologyPage() {
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {['Vercel Edge Network', 'Node 20 Runtime', 'MongoDB Atlas M0+', 'TLS 1.2 Ingest', 'No client secrets'].map((t) => (
+                  {['Vercel Edge Network', 'Node 20 Runtime', 'Firebase RTDB', 'TLS 1.2 Ingest', 'No client secrets'].map((t) => (
                     <span key={t} className="chip">
                       {t}
                     </span>

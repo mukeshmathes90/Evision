@@ -24,7 +24,7 @@ const TIMELINE = [
     icon: FlaskConical,
     phase: 'Phase 02',
     title: 'Make it durable',
-    body: `The ${HARDWARE.mcuShort} reads every channel, buffers frames to ${HARDWARE.storage} and writes them straight into MongoDB Atlas. Ingest no longer depends on a browser, a mobile app or the web tier being online.`,
+    body: `The ${HARDWARE.mcuShort} reads every channel, buffers frames to ${HARDWARE.storage} and writes them straight into the Firebase Realtime Database. Ingest no longer depends on a browser, a mobile app or the web tier being online.`,
   },
   {
     icon: BrainCircuit,

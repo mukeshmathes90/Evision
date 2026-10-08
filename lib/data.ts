@@ -1,7 +1,7 @@
 import 'server-only';
 import { EVISION_DEVICE_ID, DELAYED_WINDOW_S, ONLINE_WINDOW_S } from './env';
-import { databaseHealth } from './mongodb';
-import * as q from './queries';
+import { firebaseHealth } from './firebase';
+import * as q from './firebase-queries';
 import { batteryStatsFromPoints, deriveBattery, energyTotals, socSummary, statsFromPoints, summariseBuckets, thermalSummary, bucketize } from './stats';
 import { AI_MODELS, HARDWARE } from './constants';
 import { anomalyState, linkStateFromAge, thermalStatus } from './format';
@@ -27,12 +27,13 @@ import { buildThermalMap, thermalLimits } from './stats';
 /**
  * Unified data gateway.
  *
- * Every page in the platform reads through this module. Data is served only
- * from MongoDB Atlas — the firmware writes telemetry straight into the
- * database and this application is a pure read-and-aggregate consumer. There
- * is no demo/synthetic fallback: when MongoDB is unreachable the envelopes
- * carry an explicit database-error empty state and the UI never sees
- * fabricated measurements.
+ * Every page in the platform reads through this module. Telemetry is served
+ * from Firebase Realtime Database — the firmware writes frames straight into
+ * the database and this application is a pure read-and-aggregate consumer
+ * (the live dashboard additionally subscribes to Firebase from the browser).
+ * There is no demo/synthetic fallback: when Firebase is unreachable the
+ * envelopes carry an explicit database-error empty state and the UI never
+ * sees fabricated measurements.
  */
 
 export type FleetDevice = {
@@ -128,7 +129,7 @@ export interface CoreContext {
 
 const NO_DATA_MSG = 'Waiting for telemetry…';
 const OFFLINE_MSG = 'Device offline — the last known sample is shown.';
-const DB_ERROR_MSG = 'Database unreachable — telemetry cannot be read. Check MongoDB connection settings.';
+const DB_ERROR_MSG = 'Database unreachable — telemetry cannot be read. Check Firebase Realtime Database settings.';
 
 async function loadCore(deviceId: string): Promise<CoreContext> {
   const source = sourceFor(deviceId);
@@ -597,7 +598,7 @@ export async function getDevicePage(deviceId: string) {
 }
 
 export async function getHealth() {
-  const h = await databaseHealth();
+  const h = await firebaseHealth();
   return h;
 }
 

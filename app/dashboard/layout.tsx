@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
   title: 'Control Centre',
   description:
-    'Live control centre for EVISION AI: battery, solar, fuel cell, thermal, embedded-AI and alert telemetry streamed from the ESP32-S3 into MongoDB Atlas.',
+    'Live control centre for EVISION AI: battery, solar, fuel cell, thermal, embedded-AI and alert telemetry streamed from the ESP32-S3 into Firebase Realtime Database.',
 };
 
 type SP = Record<string, string | string[] | undefined>;

@@ -163,7 +163,7 @@ export function OverviewView({
                       title="Waiting for telemetryâ€¦"
                       description={
                         env?.empty ??
-                        `No telemetry documents for ${env?.deviceId ?? deviceId} inside this window. The edge node writes straight into MongoDB Atlas; values appear as soon as the next frame lands.`
+                        `No telemetry documents for ${env?.deviceId ?? deviceId} inside this window. The edge node writes straight into Firebase Realtime Database; values appear as soon as the next frame lands.`
                       }
                       state={env?.link ?? 'unknown'}
                     />

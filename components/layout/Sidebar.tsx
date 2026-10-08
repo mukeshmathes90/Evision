@@ -148,7 +148,7 @@ export function Sidebar({
               <span className="micro-strong">Edge Link</span>
             </div>
             <p className="mt-2 text-[10.5px] leading-relaxed text-ink-500">
-              ESP32-S3 → MongoDB Atlas direct-write telemetry. Status is derived from the newest{' '}
+              ESP32-S3 → Firebase Realtime Database direct-write telemetry. Status is derived from the newest{' '}
               <span className="font-mono text-ink-300">timestamp</span> in the database.
             </p>
             <Link href="/architecture" className="btn-ghost mt-2 w-full !py-1.5 !text-[11px]">

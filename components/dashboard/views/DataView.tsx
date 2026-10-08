@@ -119,8 +119,8 @@ export function DataView({
         <div className="grid gap-4 lg:grid-cols-3">
           <Panel className="lg:col-span-2">
             <PanelHeader
-              title="MongoDB Atlas collections"
-              subtitle="Write targets for the ESP32-S3 ingest pipeline"
+              title="Firebase Realtime Database"
+              subtitle="Write target for the ESP32-S3 telemetry pipeline"
               icon={Database}
             />
             <PanelBody>
@@ -128,7 +128,7 @@ export function DataView({
                 <table className="w-full min-w-[560px] border-collapse">
                   <thead>
                     <tr className="border-b border-white/[0.07]">
-                      {['Collection', 'Purpose', 'Retention'].map((h) => (
+                      {['Path', 'Purpose', 'Retention'].map((h) => (
                         <th key={h} className="px-3 py-2.5 text-left">
                           <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-ink-400">{h}</span>
                         </th>
@@ -160,7 +160,7 @@ export function DataView({
                 />
                 <CodeLine
                   icon={Database}
-                  label="Storage health and collection counts"
+                  label="Database health and layout probe"
                   path="/api/health"
                 />
               </div>
@@ -203,13 +203,9 @@ export function DataView({
 }
 
 const COLLECTION_PURPOSE = [
-  { name: 'telemetry', purpose: 'Raw PZEM + DS18B20 + AI frames', retention: 'TTL index, rolling window' },
-  { name: 'devices', purpose: 'Registration, channels, firmware', retention: 'Persistent' },
-  { name: 'alerts', purpose: 'Threshold and anomaly events', retention: 'TTL after resolution' },
-  { name: 'trips', purpose: 'Reconstructed journeys', retention: 'Persistent' },
-  { name: 'systemEvents', purpose: 'Boot, network and SD events', retention: 'Bounded list' },
-  { name: 'reports', purpose: 'Generated report metadata', retention: 'Persistent' },
-  { name: 'aiEvents', purpose: 'Model inference annotations', retention: 'Bounded window' },
+  { name: 'telemetry/<device>', purpose: 'Raw PZEM + DS18B20 + AI frames', retention: 'Per-device frame history' },
+  { name: 'devices/<device>', purpose: 'Registration, channels, firmware', retention: 'Persistent' },
+  { name: 'layout (runtime)', purpose: 'Auto-discovered frame location', retention: 'Cached per session' },
 ];
 
 function CodeLine({ icon: Icon, label, path }: { icon: typeof FileJson; label: string; path: string }) {

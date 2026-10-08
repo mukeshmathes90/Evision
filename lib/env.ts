@@ -19,6 +19,14 @@ function int(name: string, fallback: number): number {
 /** MongoDB Atlas connection string — SERVER SIDE ONLY. */
 export const MONGODB_URI = str('MONGODB_URI');
 
+/** Firebase Realtime Database root URL — public, never a secret. */
+export const FIREBASE_RTDB_URL = str(
+  'NEXT_PUBLIC_FIREBASE_RTDB_URL',
+  'https://evisionai-bca1c-default-rtdb.firebaseio.com',
+);
+
+export const FIREBASE_PROJECT_ID = str('FIREBASE_PROJECT_ID', 'evisionai-bca1c');
+
 export const MONGODB_DATABASE = str('MONGODB_DATABASE', 'evision');
 
 export const MONGODB_COLLECTIONS = {

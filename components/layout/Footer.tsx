@@ -18,13 +18,13 @@ export function Footer() {
             </div>
             <p className="mt-4 max-w-sm text-[11.5px] leading-relaxed text-ink-400">
               An edge-AI telemetry platform for electric mobility. Instrumentation on an ESP32-S3, telemetry written directly into
-              MongoDB Atlas, intelligence rendered for engineers and operators.
+              Firebase Realtime Database, intelligence rendered for engineers and operators.
             </p>
             <div className="mt-5 flex flex-wrap gap-2">
               <span className="chip">ESP32-S3 N16R8</span>
               <span className="chip">PZEM-017 ×3</span>
               <span className="chip">DS18B20 ×4</span>
-              <span className="chip">MongoDB Atlas</span>
+              <span className="chip">Firebase RTDB</span>
             </div>
           </div>
 
@@ -49,8 +49,8 @@ export function Footer() {
 
         <div className="mt-12 flex flex-col gap-3 border-t border-white/[0.06] pt-6 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-[11px] text-ink-500">
-            © {new Date().getFullYear()} {PRODUCT.company}. {PRODUCT.name} — all telemetry values are read server-side from MongoDB
-            Atlas; credentials never reach the browser.
+            © {new Date().getFullYear()} {PRODUCT.company}. {PRODUCT.name} — all telemetry values are read from Firebase
+            Realtime Database; no credentials reach the browser.
           </p>
           <div className="flex flex-wrap gap-4">
             <Link href="/about" className="text-[11px] text-ink-500 transition-colors hover:text-ink-200">

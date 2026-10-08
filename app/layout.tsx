@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     template: `%s · ${PRODUCT.name}`,
   },
   description:
-    'Real-time energy intelligence for electric mobility: solar generation, fuel-cell power, battery monitoring, thermal sensing and embedded AI inference on the ESP32-S3, streamed straight into MongoDB Atlas and rendered by a professional analytics platform.',
+    'Real-time energy intelligence for electric mobility: solar generation, fuel-cell power, battery monitoring, thermal sensing and embedded AI inference on the ESP32-S3, streamed straight into Firebase Realtime Database and rendered by a professional analytics platform.',
   keywords: [
     'EV energy monitoring',
     'embedded AI',
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     'fuel cell telemetry',
     'solar vehicle',
     'state of charge prediction',
-    'MongoDB Atlas IoT',
+    'Firebase Realtime Database IoT',
     'anomaly detection',
   ],
   authors: [{ name: PRODUCT.company }],

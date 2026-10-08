@@ -34,7 +34,7 @@ const EDGE = [
 
 const PLATFORM = [
   { label: 'API routes', detail: 'Aggregate + validate server-side', icon: Server, color: '#3B82F6' },
-  { label: 'MongoDB Atlas', detail: 'telemetry · alerts · trips · ai · sessions', icon: Database, color: '#34D399' },
+  { label: 'Firebase RTDB', detail: 'telemetry · devices · layout', icon: Database, color: '#34D399' },
   { label: 'Next.js App Router', detail: 'SSR + live polling + CSV export', icon: Globe, color: '#22D3EE' },
 ];
 
@@ -176,10 +176,10 @@ function Pipe({ label, color }: { label: string; color: string }) {
 /** Deployment and runtime facts used on the architecture page. */
 export function ArchitectureFacts() {
   const facts = [
-    { label: 'Write path', value: 'Firmware → Atlas', detail: 'Direct HTTPS insert from the ESP32-S3; the platform is not in the ingest path.' },
-    { label: 'Read path', value: 'Atlas → server routes', detail: 'Mongoose with a pooled single connection; aggregation happens server-side.' },
-    { label: 'Secrets', value: 'Server-only', detail: 'MONGODB_URI is read inside server modules and marked server-only; the bundle ships no credentials.' },
-    { label: 'Indexes', value: 'deviceId + timestamp', detail: 'Compound index plus a descending timestamp index power every range query on the platform.' },
+    { label: 'Write path', value: 'Firmware → Firebase', detail: 'Direct write from the ESP32-S3; the platform is not in the ingest path.' },
+    { label: 'Read path', value: 'Firebase → app', detail: 'Stateless HTTPS reads with a short cache; aggregation happens server-side.' },
+    { label: 'Secrets', value: 'Server-only', detail: 'Server modules stay server-only and the public RTDB URL is the only client-visible config; the bundle ships no credentials.' },
+    { label: 'Ordering', value: 'deviceId + time', detail: 'Frames are grouped per device and ordered by timestamp, which powers every range query on the platform.' },
     { label: 'Deploy', value: 'Vercel serverless', detail: 'Node runtime, no long-lived connections; connection reuse across warm invocations.' },
     { label: 'Fallback', value: 'Labelled demo dataset', detail: 'Deterministic synthetic frames for a separate demo device, never merged with live data.' },
   ];

@@ -33,7 +33,7 @@ export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
   title: `${PRODUCT.name} — ${PRODUCT.tagline}`,
   description:
-    'Real-time energy intelligence for electric mobility. Solar, fuel-cell and battery telemetry from an ESP32-S3 edge node, streamed straight into MongoDB Atlas and rendered as an interactive vehicle intelligence platform.',
+    'Real-time energy intelligence for electric mobility. Solar, fuel-cell and battery telemetry from an ESP32-S3 edge node, streamed straight into Firebase Realtime Database and rendered as an interactive vehicle intelligence platform.',
   alternates: { canonical: '/' },
   openGraph: {
     title: `${PRODUCT.name} — ${PRODUCT.tagline}`,
@@ -115,7 +115,7 @@ const PIPELINE = [
   {
     icon: Network,
     title: 'Stream',
-    body: 'Each frame is written straight into the MongoDB Atlas `telemetry` collection over TLS. No platform proxy, no polling API between firmware and database.',
+    body: 'Each frame is written straight into the Firebase Realtime Database over TLS. No platform proxy, no polling API between firmware and database.',
   },
   {
     icon: Database,
@@ -176,9 +176,9 @@ export default async function LandingPage() {
 
                 <Reveal delay={2}>
                   <p className="mt-6 max-w-xl text-[14.5px] leading-relaxed text-ink-300">
-                    {PRODUCT.description} Instrumentation sits on an {HARDWARE.mcuShort}, streams directly into MongoDB
-                    Atlas, and is resolved here into an interactive vehicle, energy-flow schematic and AI telemetry you can act
-                    on.
+                    {PRODUCT.description} Instrumentation sits on an {HARDWARE.mcuShort}, streams directly into the
+                    Firebase Realtime Database, and is resolved here into an interactive vehicle, energy-flow schematic and AI
+                    telemetry you can act on.
                   </p>
                 </Reveal>
 
@@ -367,7 +367,7 @@ export default async function LandingPage() {
                 From a UART frame to a rendered chart in one hop
               </h2>
               <p className="mt-5 text-[13.5px] leading-relaxed text-ink-400">
-                The firmware writes telemetry directly into MongoDB Atlas. The web tier only reads and aggregates, which keeps
+                The firmware writes telemetry directly into Firebase Realtime Database. The website only reads and aggregates, which keeps
                 the write path independent of application availability and removes a whole class of ingest bottleneck.
               </p>
             </Reveal>
@@ -390,7 +390,7 @@ export default async function LandingPage() {
             <Reveal delay={2}>
               <div className="panel mt-4 overflow-hidden p-6 sm:p-8">
                 <div className="flex flex-wrap items-center gap-3">
-                  {['ESP32-S3', 'PZEM ×3', 'DS18B20 ×4', 'MicroSD', 'Wi-Fi + TLS', 'MongoDB Atlas', 'Next.js'].map((n) => (
+                  {['ESP32-S3', 'PZEM ×3', 'DS18B20 ×4', 'MicroSD', 'Wi-Fi + TLS', 'Firebase RTDB', 'Next.js'].map((n) => (
                     <span key={n} className="chip">
                       {n}
                     </span>

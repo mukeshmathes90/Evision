@@ -58,7 +58,7 @@ export function DataSourceBadge({ source, className }: { source: DataSource; cla
         demo ? 'border-sun-500/40 bg-sun-500/10 text-sun-400' : 'border-hydro-500/35 bg-hydro-500/10 text-hydro-400',
         className,
       )}
-      title={demo ? 'Synthetic dataset — EV-DEMO-001' : 'Live telemetry from MongoDB Atlas'}
+      title={demo ? 'Synthetic dataset — EV-DEMO-001' : 'Live telemetry from Firebase'}
     >
       <Database className="h-3 w-3" />
       {demo ? 'DEMO DEVICE' : 'LIVE'}

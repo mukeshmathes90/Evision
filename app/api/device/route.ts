@@ -1,8 +1,8 @@
 import { guard, ok, fail } from '@/lib/api';
 import { deviceFromParams } from '@/lib/api-range';
 import { getDevicePage } from '@/lib/data';
-import { databaseHealth } from '@/lib/mongodb';
-import { MONGODB_COLLECTIONS, MONGODB_DATABASE, ONLINE_WINDOW_S, DELAYED_WINDOW_S } from '@/lib/env';
+import { firebaseHealth } from '@/lib/firebase';
+import { DELAYED_WINDOW_S, FIREBASE_PROJECT_ID, ONLINE_WINDOW_S } from '@/lib/env';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -13,13 +13,13 @@ export async function GET(req: Request) {
   try {
     const sp = new URL(req.url).searchParams;
     const envelope = await getDevicePage(deviceFromParams(sp));
-    const health = await databaseHealth();
+    const health = await firebaseHealth();
     return ok({
       envelope,
       database: {
         ...health,
-        name: MONGODB_DATABASE,
-        collections: MONGODB_COLLECTIONS,
+        name: FIREBASE_PROJECT_ID,
+        collections: {},
         onlineWindowS: ONLINE_WINDOW_S,
         delayedWindowS: DELAYED_WINDOW_S,
       },

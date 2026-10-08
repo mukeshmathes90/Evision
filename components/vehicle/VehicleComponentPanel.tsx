@@ -137,9 +137,9 @@ export function VehicleComponentPanel({
     return (
       <div className="flex h-full flex-col items-center justify-center px-6 py-14 text-center">
         <Radio className="h-5 w-5 text-ink-600" />
-        <p className="mt-3 text-[13px] text-ink-300">Waiting for telemetryâ€¦</p>
+        <p className="mt-3 text-[13px] text-ink-300">Waiting for telemetry…</p>
         <p className="mt-1.5 max-w-xs text-[11.5px] leading-relaxed text-ink-500">
-          The MongoDB Atlas <span className="font-mono">telemetry</span> collection has no document for this device inside the live
+          The Firebase Realtime Database has no frame for this device inside the live
           window. Values appear the moment the ESP32-S3 writes its next frame.
         </p>
       </div>
@@ -169,7 +169,7 @@ export function VehicleComponentPanel({
               <p className="mt-0.5 font-mono text-[10px] uppercase tracking-[0.16em] text-ink-500">{meta.eyebrow}</p>
             </div>
           </div>
-          <span className="chip">from MongoDB Atlas</span>
+          <span className="chip">from Firebase RTDB</span>
         </div>
 
         <p className="mt-3 text-[11.5px] leading-relaxed text-ink-400">{meta.description}</p>

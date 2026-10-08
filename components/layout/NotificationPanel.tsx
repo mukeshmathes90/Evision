@@ -203,7 +203,7 @@ export function UserMenu() {
             </div>
             <div className="border-t border-white/[0.06] px-4 py-2.5">
               <p className="text-[9.5px] leading-relaxed text-ink-600">
-                Session secured server-side. MongoDB credentials are never exposed to this session.
+                Session secured server-side. Database credentials are never exposed to this session.
               </p>
             </div>
           </motion.div>

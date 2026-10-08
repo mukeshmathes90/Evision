@@ -7,7 +7,7 @@ import { DateRangeSelector } from '@/components/ui/DateRangeSelector';
 import { MetricGrid, MetricCard } from '@/components/ui/MetricCard';
 import { Panel, PanelBody, PanelHeader } from '@/components/ui/Panel';
 import { EmptyState } from '@/components/ui/EmptyState';
-import { LiveSection } from '@/components/live/LiveSection';
+import { FirebaseLiveSection } from '@/components/live/FirebaseLiveSection';
 import { CurrentChart, PowerChart, TemperatureChart, VoltageChart } from '@/components/charts/Charts';
 import { VehicleVisualization, type VehicleNodeKey } from '@/components/vehicle/VehicleVisualization';
 import { VehicleComponentPanel, VehicleNodePicker, VehicleTelemetryStrip } from '@/components/vehicle/VehicleComponentPanel';
@@ -27,12 +27,9 @@ export function LiveVehicleView({
   range: TimeRange;
 }) {
   const [node, setNode] = useState<VehicleNodeKey>('battery');
-  const url = `/api/live?device=${encodeURIComponent(deviceId)}&range=${range.key}${
-    range.key === 'custom' ? `&from=${range.from}&to=${range.to}` : ''
-  }`;
 
   return (
-    <LiveSection<ApiEnvelope<LivePayload>> url={url} initial={initial} intervalMs={3000} showIndicator>
+    <FirebaseLiveSection initial={initial} deviceId={deviceId} range={range} showIndicator>
       {(res) => {
         const env = res.ok ? res.envelope : null;
         const p = env?.data ?? null;
@@ -226,6 +223,6 @@ export function LiveVehicleView({
           </>
         );
       }}
-    </LiveSection>
+    </FirebaseLiveSection>
   );
 }
