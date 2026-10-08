@@ -26,29 +26,26 @@ export function ThermalMap({ cells, status }: { cells: ThermalCell[]; status: Th
       <div className="relative overflow-hidden rounded-xl border border-white/[0.07] bg-[#05080E] p-3">
         <div className="pointer-events-none absolute inset-0 grid-noise opacity-25" />
         <svg viewBox="0 0 100 100" className="relative z-10 w-full" role="img" aria-label="Vehicle thermal map">
-          {/* Vehicle silhouette (top-down) */}
+          {/* Flat top-down vehicle (wheels beneath the body) */}
+          <g fill="#141B27" stroke="#2C3A52" strokeWidth="0.6">
+            <rect x="0" y="16" width="10" height="18" rx="3.5" />
+            <rect x="90" y="16" width="10" height="18" rx="3.5" />
+            <rect x="0" y="72" width="10" height="18" rx="3.5" />
+            <rect x="90" y="72" width="10" height="18" rx="3.5" />
+          </g>
           <path
-            d="M28 6 C24 6 21 10 21 16 L19 40 C18 52 17 62 19 76 C20 88 23 94 28 94 L72 94 C77 94 80 88 81 76 C83 62 82 52 81 40 L79 16 C79 10 76 6 72 6 Z"
-            fill="rgba(255,255,255,0.015)"
-            stroke="rgba(255,255,255,0.16)"
-            strokeWidth="0.7"
+            d="M34 4 C20 6 10 16 8 30 L5 74 C4 86 10 95 20 96 L80 96 C90 95 96 86 95 74 L92 30 C90 16 80 6 66 4 Z"
+            fill="#111826"
+            stroke="#33445F"
+            strokeWidth="1"
           />
-          <rect x="41" y="20" width="18" height="20" rx="4" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)" strokeWidth="0.5" />
-          <text x="50" y="17" textAnchor="middle" className="fill-ink-500" style={{ fontSize: 2.6, letterSpacing: '0.1em' }}>
-            PV ROOF
-          </text>
-          <rect x="26" y="80" width="48" height="10" rx="3" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)" strokeWidth="0.5" />
-          <text x="50" y="86.5" textAnchor="middle" className="fill-ink-500" style={{ fontSize: 3, letterSpacing: '0.1em' }}>
-            BATTERY ENCLOSURE
-          </text>
-          <circle cx="34" cy="72" r="5.5" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="0.6" />
-          <circle cx="66" cy="72" r="5.5" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="0.6" />
-          <text x="34" y="73.2" textAnchor="middle" className="fill-ink-600" style={{ fontSize: 3 }}>
-            M
-          </text>
-          <text x="66" y="73.2" textAnchor="middle" className="fill-ink-600" style={{ fontSize: 3 }}>
-            M
-          </text>
+          <path d="M12 46 L88 46" stroke="#FFFFFF" strokeWidth="0.5" opacity="0.07" />
+          <path d="M10 76 L90 76" stroke="#FFFFFF" strokeWidth="0.5" opacity="0.07" />
+          <path d="M50 8 L50 92" stroke="#FFFFFF" strokeWidth="0.5" opacity="0.05" />
+          <path d="M12 10 L28 7 L29 13 L13 16 Z" fill="#DBEAFE" opacity="0.5" />
+          <path d="M88 10 L72 7 L71 13 L87 16 Z" fill="#DBEAFE" opacity="0.5" />
+          <path d="M12 90 L28 93 L27 87 L13 84 Z" fill="#F87171" opacity="0.5" />
+          <path d="M88 90 L72 93 L73 87 L87 84 Z" fill="#F87171" opacity="0.5" />
 
           {cells.map((c, i) => {
             const has = Number.isFinite(c.tempC);

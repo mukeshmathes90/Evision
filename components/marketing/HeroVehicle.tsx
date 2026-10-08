@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { absOrNull, EM, fmt, fmtPower, fmtPowerUnit } from '@/lib/format';
 import type { BatteryState, TelemetryReading } from '@/types';
+import { CAR_ART, CAR_PALETTE } from '@/components/vehicle/carArt';
 
 const RING = [
   { r: 152, speed: 26, dots: 3, color: '#60A5FA' },
@@ -10,7 +11,7 @@ const RING = [
   { r: 100, speed: 13, dots: 2, color: '#A78BFA' },
 ];
 
-/** Cinematic hero visual: EV silhouette inside rotating telemetry rings. */
+/** Cinematic hero visual: flat EV illustration inside rotating telemetry rings. */
 export function HeroVehicle({ latest, battery }: { latest: TelemetryReading | null; battery: BatteryState | null }) {
   const soc = battery?.soc ?? null;
   const circ = 2 * Math.PI * 78;
@@ -21,7 +22,7 @@ export function HeroVehicle({ latest, battery }: { latest: TelemetryReading | nu
     { label: 'SOLAR', value: latest ? `${fmtPower(absOrNull(latest.solar.power))} ${fmtPowerUnit(latest.solar.power)}` : EM, color: '#FBBF24' },
     { label: 'STACK', value: latest ? `${fmtPower(absOrNull(latest.fuelCell.power))} ${fmtPowerUnit(latest.fuelCell.power)}` : EM, color: '#22D3EE' },
     { label: 'TRACTION', value: latest ? `${fmtPower(absOrNull(latest.vehicle.power))} ${fmtPowerUnit(latest.vehicle.power)}` : EM, color: '#60A5FA' },
-    { label: 'THERMAL', value: latest ? `${fmt(latest.temperature.max, 1, EM)} Â°C` : EM, color: '#F87171' },
+    { label: 'THERMAL', value: latest ? `${fmt(latest.temperature.max, 1, EM)} °C` : EM, color: '#F87171' },
     { label: 'ANOMALY', value: latest ? fmt(latest.ai.anomalyScore, 3, EM) : EM, color: '#A78BFA' },
   ];
 
@@ -32,11 +33,6 @@ export function HeroVehicle({ latest, battery }: { latest: TelemetryReading | nu
 
       <svg viewBox="0 0 400 400" className="relative h-full w-full">
         <defs>
-          <linearGradient id="hv-body" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#93C5FD" />
-            <stop offset="50%" stopColor="#22D3EE" />
-            <stop offset="100%" stopColor="#A78BFA" />
-          </linearGradient>
           <linearGradient id="hv-soc" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stopColor="#3B82F6" />
             <stop offset="100%" stopColor="#22D3EE" />
@@ -86,25 +82,55 @@ export function HeroVehicle({ latest, battery }: { latest: TelemetryReading | nu
           transform="rotate(-90 200 200)"
         />
 
-        {/* EV silhouette (side profile) */}
+        {/* Flat EV illustration — shared canonical artwork */}
         <motion.g
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
         >
-          <path
-            d="M118 232 C122 214 132 205 148 202 L170 190 C178 180 190 174 204 174 L232 174 C246 174 258 180 266 190 L286 202 C300 206 308 216 310 230 L310 236 L118 236 Z"
-            fill="rgba(255,255,255,0.05)"
-            stroke="url(#hv-body)"
-            strokeWidth="2"
-            strokeLinejoin="round"
-          />
-          <path d="M176 190 C182 182 192 178 204 178 L230 178 C242 178 252 183 259 191 Z" fill="rgba(147,197,253,0.16)" stroke="rgba(255,255,255,0.18)" strokeWidth="1" />
-          <rect x="124" y="236" width="186" height="3" rx="1.5" fill="rgba(255,255,255,0.18)" />
-          <circle cx="160" cy="242" r="15" fill="#04060A" stroke="url(#hv-body)" strokeWidth="2" />
-          <circle cx="160" cy="242" r="5" fill="rgba(255,255,255,0.25)" />
-          <circle cx="274" cy="242" r="15" fill="#04060A" stroke="url(#hv-body)" strokeWidth="2" />
-          <circle cx="274" cy="242" r="5" fill="rgba(255,255,255,0.25)" />
+          <g transform="translate(88,170) scale(0.56)">
+            {/* Wheels */}
+            {[CAR_ART.wheels.rear, CAR_ART.wheels.front].map((w) => (
+              <g key={`${w.cx}`}>
+                <circle cx={w.cx} cy={w.cy} r={w.r} fill={CAR_PALETTE.tyre} />
+                <circle cx={w.cx} cy={w.cy} r={w.r - 3} fill="none" stroke={CAR_PALETTE.bodyEdge} strokeWidth="2.2" />
+                <circle cx={w.cx} cy={w.cy} r={w.r - 12} fill={CAR_PALETTE.rim} />
+                {Array.from({ length: 5 }, (_, i) => {
+                  const a = (i / 5) * Math.PI * 2 + 0.3;
+                  return (
+                    <line
+                      key={i}
+                      x1={w.cx + 5 * Math.cos(a)}
+                      y1={w.cy + 5 * Math.sin(a)}
+                      x2={w.cx + (w.r - 13) * Math.cos(a)}
+                      y2={w.cy + (w.r - 13) * Math.sin(a)}
+                      stroke={CAR_PALETTE.hub}
+                      strokeWidth="4.5"
+                      strokeLinecap="round"
+                      opacity="0.5"
+                    />
+                  );
+                })}
+                <circle cx={w.cx} cy={w.cy} r="5" fill={CAR_PALETTE.hub} opacity="0.85" />
+              </g>
+            ))}
+
+            {/* Body */}
+            <path d={CAR_ART.body} fill={CAR_PALETTE.body} stroke={CAR_PALETTE.bodyEdge} strokeWidth="2.4" />
+            <path d={CAR_ART.crease} fill="none" stroke={CAR_PALETTE.crease} strokeWidth="2.4" strokeLinecap="round" />
+
+            {/* Glass */}
+            <path d={CAR_ART.glassRear} fill={CAR_PALETTE.glass} stroke={CAR_PALETTE.glassEdge} strokeWidth="1.8" />
+            <path d={CAR_ART.glassFront} fill={CAR_PALETTE.glass} stroke={CAR_PALETTE.glassEdge} strokeWidth="1.8" />
+            <path d={CAR_ART.bPillar} fill={CAR_PALETTE.pillar} />
+
+            {/* Details */}
+            <path d={CAR_ART.doorLine} stroke={CAR_PALETTE.crease} strokeWidth="2.2" fill="none" />
+            <rect {...CAR_ART.handle} fill={CAR_PALETTE.detail} />
+            <path d={CAR_ART.mirror} fill={CAR_PALETTE.body} stroke={CAR_PALETTE.bodyEdge} strokeWidth="1.8" />
+            <path d={CAR_ART.headlight} fill={CAR_PALETTE.headlight} opacity="0.9" />
+            <rect {...CAR_ART.taillight} fill={CAR_PALETTE.taillight} opacity="0.9" />
+          </g>
           {/* Charge bolt */}
           <motion.path
             d="M208 196 L198 214 L206 214 L202 230 L216 210 L207 210 Z"

@@ -5,6 +5,7 @@ import { useId, useMemo, useState } from 'react';
 import { cn } from '@/lib/cn';
 import { absOrNull, EM, fmt, fmtPower, fmtPowerUnit, thermalColor } from '@/lib/format';
 import type { BatteryState, TelemetryReading } from '@/types';
+import { CAR_ART, CAR_PALETTE } from './carArt';
 
 export type VehicleNodeKey = 'solar' | 'fuelCell' | 'battery' | 'motor' | 'thermal' | 'ai';
 
@@ -21,49 +22,49 @@ export const VEHICLE_NODES: VehicleNode[] = [
   {
     key: 'solar',
     label: 'SOLAR',
-    eyebrow: 'PZEM #1 Â· 0x01',
+    eyebrow: 'PZEM #1 · 0x01',
     description: 'Roof and hood photovoltaic array feeding the DC bus through a dedicated MPPT channel.',
-    hotspot: { x: 520, y: 128 },
+    hotspot: { x: 542, y: 116 },
     labelAnchor: 'above',
   },
   {
     key: 'fuelCell',
     label: 'FUEL CELL',
-    eyebrow: 'PZEM #2 Â· 0x02',
+    eyebrow: 'PZEM #2 · 0x02',
     description: 'Hydrogen fuel-cell stack with humidifier and air compressor, output metered on channel 2.',
-    hotspot: { x: 806, y: 300 },
+    hotspot: { x: 814, y: 264 },
     labelAnchor: 'below',
   },
   {
     key: 'battery',
     label: 'BATTERY',
-    eyebrow: 'PZEM #3 Â· 0x03 Â· 48 V pack',
+    eyebrow: 'PZEM #3 · 0x03 · 48 V pack',
     description: '13S lithium pack on the skateboard chassis. Channel 3 measures the traction bus directly.',
-    hotspot: { x: 505, y: 322 },
+    hotspot: { x: 511, y: 278 },
     labelAnchor: 'below',
   },
   {
     key: 'motor',
     label: 'MOTOR',
-    eyebrow: 'Inverter Â· traction drive',
+    eyebrow: 'Inverter · traction drive',
     description: 'Permanent-magnet traction motor and inverter. Load is inferred from channel 3 power.',
-    hotspot: { x: 252, y: 296 },
+    hotspot: { x: 292, y: 232 },
     labelAnchor: 'left',
   },
   {
     key: 'thermal',
     label: 'THERMAL SENSORS',
-    eyebrow: 'DS18B20 Ã—4',
+    eyebrow: 'DS18B20 ×4',
     description: 'Four 1-Wire probes placed on the PV array, fuel-cell stack, inverter and battery enclosure.',
-    hotspot: { x: 414, y: 262 },
+    hotspot: { x: 446, y: 214 },
     labelAnchor: 'above',
   },
   {
     key: 'ai',
     label: 'AI SYSTEM',
-    eyebrow: 'ESP32-S3 Â· edge inference',
+    eyebrow: 'ESP32-S3 · edge inference',
     description: 'SOC prediction, range prediction and anomaly detection executed on the microcontroller.',
-    hotspot: { x: 700, y: 216 },
+    hotspot: { x: 584, y: 226 },
     labelAnchor: 'above',
   },
 ];
@@ -121,113 +122,64 @@ export function VehicleVisualization({
 
       <svg viewBox="0 0 1000 430" className="relative z-10 w-full" role="group" aria-label="Interactive electric vehicle system diagram">
         <defs>
-          <linearGradient id={`${uid}-body`} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#1B2434" />
-            <stop offset="46%" stopColor="#141B27" />
-            <stop offset="100%" stopColor="#0A0F18" />
-          </linearGradient>
-          <linearGradient id={`${uid}-glass`} x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#1D3350" stopOpacity="0.95" />
-            <stop offset="55%" stopColor="#0E1B2E" stopOpacity="0.92" />
-            <stop offset="100%" stopColor="#0A1420" stopOpacity="0.96" />
-          </linearGradient>
-          <linearGradient id={`${uid}-panel`} x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#153C63" />
-            <stop offset="50%" stopColor="#0E2942" />
-            <stop offset="100%" stopColor="#0A1B2C" />
-          </linearGradient>
-          <linearGradient id={`${uid}-sill`} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#24344C" />
-            <stop offset="100%" stopColor="#101825" />
-          </linearGradient>
-          <linearGradient id={`${uid}-tyre`} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#1A2230" />
-            <stop offset="100%" stopColor="#080B12" />
-          </linearGradient>
-          <linearGradient id={`${uid}-head`} x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#BFDBFE" stopOpacity="0.15" />
-            <stop offset="100%" stopColor="#DBEAFE" stopOpacity="0.9" />
-          </linearGradient>
-          <linearGradient id={`${uid}-tail`} x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#FCA5A5" stopOpacity="0.9" />
-            <stop offset="100%" stopColor="#F87171" stopOpacity="0.12" />
-          </linearGradient>
-          <radialGradient id={`${uid}-glow`}>
-            <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.5" />
-            <stop offset="100%" stopColor="#3B82F6" stopOpacity="0" />
-          </radialGradient>
           <filter id={`${uid}-soft`} x="-40%" y="-40%" width="180%" height="180%">
             <feGaussianBlur stdDeviation="7" />
           </filter>
         </defs>
 
         {/* Ground shadow */}
-        <ellipse cx="500" cy="366" rx="440" ry="16" fill="#000" opacity="0.55" filter={`url(#${uid}-soft)`} />
+        <ellipse cx="500" cy="338" rx="396" ry="13" fill="#000" opacity="0.5" filter={`url(#${uid}-soft)`} />
 
-        {/* Wheels */}
-        {[252, 760].map((cx) => (
-          <g key={cx}>
-            <circle cx={cx} cy="332" r="62" fill={`url(#${uid}-tyre)`} stroke="#2B3648" strokeWidth="1.2" />
-            <circle cx={cx} cy="332" r="44" fill="none" stroke="#39465C" strokeWidth="1" opacity="0.85" />
-            {Array.from({ length: 10 }, (_, i) => {
-              const a = (i / 10) * Math.PI * 2;
-              return (
-                <line
-                  key={i}
-                  x1={cx + 15 * Math.cos(a)}
-                  y1={332 + 15 * Math.sin(a)}
-                  x2={cx + 40 * Math.cos(a)}
-                  y2={332 + 40 * Math.sin(a)}
-                  stroke="#46566E"
-                  strokeWidth="3.4"
-                  strokeLinecap="round"
-                  opacity="0.8"
-                />
-              );
-            })}
-            <circle cx={cx} cy="332" r="13" fill="#0E1420" stroke="#5A6B84" strokeWidth="1" />
-            <circle cx={cx} cy="332" r="4.5" fill="#64748B" opacity="0.7" />
-          </g>
-        ))}
+        {/* Flat car body — shared canonical artwork */}
+        <g transform="translate(100,70) scale(2)">
+          {/* Wheels (flat: tyre, rim, spokes, hub) */}
+          {[CAR_ART.wheels.rear, CAR_ART.wheels.front].map((w) => (
+            <g key={`${w.cx}`}>
+              <circle cx={w.cx} cy={w.cy} r={w.r} fill={CAR_PALETTE.tyre} />
+              <circle cx={w.cx} cy={w.cy} r={w.r - 3} fill="none" stroke={CAR_PALETTE.bodyEdge} strokeWidth="1.4" />
+              <circle cx={w.cx} cy={w.cy} r={w.r - 12} fill={CAR_PALETTE.rim} />
+              {Array.from({ length: 5 }, (_, i) => {
+                const a = (i / 5) * Math.PI * 2 + 0.3;
+                return (
+                  <line
+                    key={i}
+                    x1={w.cx + 5 * Math.cos(a)}
+                    y1={w.cy + 5 * Math.sin(a)}
+                    x2={w.cx + (w.r - 13) * Math.cos(a)}
+                    y2={w.cy + (w.r - 13) * Math.sin(a)}
+                    stroke={CAR_PALETTE.hub}
+                    strokeWidth="2.6"
+                    strokeLinecap="round"
+                    opacity="0.5"
+                  />
+                );
+              })}
+              <circle cx={w.cx} cy={w.cy} r="5" fill={CAR_PALETTE.hub} opacity="0.85" />
+            </g>
+          ))}
 
-        {/* Body */}
-        <path
-          d="M60 330 C60 292 84 268 128 258 L238 238 C266 234 288 224 308 206 L376 148 C396 132 416 126 444 126 L594 126 C630 126 652 137 674 159 L744 232 C756 245 778 252 806 254 L898 264 C934 269 954 292 954 322 L954 336 C954 344 948 348 938 348 L78 348 C66 348 60 342 60 330 Z"
-          fill={`url(#${uid}-body)`}
-          stroke="#33415A"
-          strokeWidth="1.4"
-        />
+          {/* Body */}
+          <path d={CAR_ART.body} fill={CAR_PALETTE.body} stroke={CAR_PALETTE.bodyEdge} strokeWidth="1.4" />
 
-        {/* Shoulder crease */}
-        <path d="M118 292 C300 276 700 268 928 288" fill="none" stroke="#3E4F6B" strokeWidth="1" opacity="0.55" />
-        <path d="M118 296 C300 280 700 272 928 292" fill="none" stroke="#243247" strokeWidth="2.2" opacity="0.5" />
+          {/* Shoulder crease */}
+          <path d={CAR_ART.crease} fill="none" stroke={CAR_PALETTE.crease} strokeWidth="1.4" strokeLinecap="round" />
 
-        {/* Sill / underbody */}
-        <rect x="120" y="330" width="800" height="16" rx="7" fill={`url(#${uid}-sill)`} opacity="0.9" />
+          {/* Glass */}
+          <path d={CAR_ART.glassRear} fill={CAR_PALETTE.glass} stroke={CAR_PALETTE.glassEdge} strokeWidth="1" />
+          <path d={CAR_ART.glassFront} fill={CAR_PALETTE.glass} stroke={CAR_PALETTE.glassEdge} strokeWidth="1" />
+          <path d={CAR_ART.bPillar} fill={CAR_PALETTE.pillar} />
 
-        {/* Glass */}
-        <path d="M598 150 L678 240 L476 240 L476 150 Z" fill={`url(#${uid}-glass)`} stroke="#31425C" strokeWidth="1" />
-        <path d="M436 150 L476 150 L476 240 L356 240 Z" fill={`url(#${uid}-glass)`} stroke="#31425C" strokeWidth="1" />
-        <path d="M436 150 L476 150 L476 240 L356 240 Z" fill="#22D3EE" opacity="0.05" />
-        <line x1="476" y1="150" x2="476" y2="240" stroke="#0A121C" strokeWidth="7" />
-        <path d="M604 158 L676 234" stroke="#4E6280" strokeWidth="1" opacity="0.5" />
-        <path d="M452 158 L378 234" stroke="#4E6280" strokeWidth="1" opacity="0.5" />
+          {/* Door line + handle + mirror */}
+          <path d={CAR_ART.doorLine} stroke={CAR_PALETTE.crease} strokeWidth="1.2" fill="none" />
+          <rect {...CAR_ART.handle} fill={CAR_PALETTE.detail} />
+          <path d={CAR_ART.mirror} fill={CAR_PALETTE.body} stroke={CAR_PALETTE.bodyEdge} strokeWidth="1" />
 
-        {/* Doors */}
-        <line x1="596" y1="150" x2="620" y2="332" stroke="#26324A" strokeWidth="1" />
-        <line x1="476" y1="152" x2="486" y2="332" stroke="#26324A" strokeWidth="1" />
-        <line x1="356" y1="242" x2="344" y2="332" stroke="#26324A" strokeWidth="1" />
-        <rect x="606" y="252" width="16" height="3.4" rx="1.7" fill="#4A5B75" />
-        <rect x="484" y="252" width="16" height="3.4" rx="1.7" fill="#4A5B75" />
+          {/* Lights */}
+          <path d={CAR_ART.headlight} fill={CAR_PALETTE.headlight} opacity="0.9" />
+          <rect {...CAR_ART.taillight} fill={CAR_PALETTE.taillight} opacity="0.9" />
+        </g>
 
-        {/* Mirrors */}
-        <path d="M596 246 L620 240 L628 250 L604 256 Z" fill="#1B2434" stroke="#3A4A64" strokeWidth="1" />
-
-        {/* Lights */}
-        <path d="M944 300 C960 302 964 312 958 322 L934 322 C938 314 942 306 944 300 Z" fill={`url(#${uid}-head)`} />
-        <rect x="64" y="286" width="26" height="9" rx="4.5" fill={`url(#${uid}-tail)`} />
-
-        {/* Solar array â€” roof */}
+        {/* Solar array — roof */}
         <g
           className={cn('cursor-pointer', active === 'solar' && 'brightness-125')}
           onClick={() => select('solar')}
@@ -236,14 +188,14 @@ export function VehicleVisualization({
           tabIndex={0}
           aria-label="Solar array"
         >
-          <path d="M424 122 L606 122 L622 142 L408 142 Z" fill={`url(#${uid}-panel)`} stroke={active === 'solar' ? '#FBBF24' : '#2B4A6B'} strokeWidth={active === 'solar' ? 1.8 : 1} />
+          <rect x="462" y="108" width="160" height="18" rx="6" fill="#12283F" stroke={active === 'solar' ? '#FBBF24' : '#2B4A6B'} strokeWidth={active === 'solar' ? 1.8 : 1} />
           {[0, 1, 2, 3, 4].map((i) => (
-            <line key={i} x1={430 + i * 40} y1="124" x2={414 + i * 40} y2="140" stroke="#3E6E9E" strokeWidth="0.8" opacity="0.8" />
+            <line key={i} x1={478 + i * 32} y1="110" x2={474 + i * 32} y2="124" stroke="#3E6E9E" strokeWidth="1.4" opacity="0.8" />
           ))}
-          <line x1="418" y1="132" x2="614" y2="132" stroke="#3E6E9E" strokeWidth="0.7" opacity="0.6" />
+          <line x1="466" y1="117" x2="618" y2="117" stroke="#3E6E9E" strokeWidth="1.2" opacity="0.7" />
         </g>
 
-        {/* Solar array â€” hood */}
+        {/* Solar array — hood */}
         <g
           className="cursor-pointer"
           onClick={() => select('solar')}
@@ -252,9 +204,9 @@ export function VehicleVisualization({
           tabIndex={0}
           aria-label="Solar hood array"
         >
-          <path d="M700 252 L802 256 L796 272 L696 268 Z" fill={`url(#${uid}-panel)`} stroke={active === 'solar' ? '#FBBF24' : '#2B4A6B'} strokeWidth={active === 'solar' ? 1.8 : 1} />
+          <path d="M 754 196 L 844 212 L 838 224 L 748 210 Z" fill="#12283F" stroke={active === 'solar' ? '#FBBF24' : '#2B4A6B'} strokeWidth={active === 'solar' ? 1.8 : 1} />
           {[0, 1, 2].map((i) => (
-            <line key={i} x1={718 + i * 28} y1={254 + i * 0.6} x2={714 + i * 28} y2={270 + i * 0.6} stroke="#3E6E9E" strokeWidth="0.8" opacity="0.8" />
+            <line key={i} x1={770 + i * 24} y1={199 + i * 4} x2={766 + i * 24} y2={211 + i * 4} stroke="#3E6E9E" strokeWidth="1.4" opacity="0.8" />
           ))}
         </g>
 
@@ -268,19 +220,19 @@ export function VehicleVisualization({
           aria-label="Fuel cell stack"
         >
           <rect
-            x="748"
-            y="276"
-            width="122"
-            height="44"
-            rx="10"
+            x="776"
+            y="238"
+            width="76"
+            height="38"
+            rx="8"
             fill="#0E2233"
             stroke={active === 'fuelCell' ? '#22D3EE' : '#245C74'}
             strokeWidth={active === 'fuelCell' ? 1.8 : 1}
           />
-          {Array.from({ length: 7 }, (_, i) => (
-            <rect key={i} x={756 + i * 16} y="284" width="9" height="28" rx="3" fill="#22D3EE" opacity={0.18 + (i % 2) * 0.12} />
+          {Array.from({ length: 5 }, (_, i) => (
+            <rect key={i} x={784 + i * 14} y="246" width="8" height="22" rx="3" fill="#22D3EE" opacity={0.18 + (i % 2) * 0.12} />
           ))}
-          <text x="809" y="274" textAnchor="middle" className="fill-ion-300" style={{ fontSize: 9, letterSpacing: '0.16em' }}>
+          <text x="814" y="234" textAnchor="middle" className="fill-ion-300" style={{ fontSize: 9, letterSpacing: '0.16em' }}>
             H2 STACK
           </text>
         </g>
@@ -295,11 +247,11 @@ export function VehicleVisualization({
           aria-label="Battery pack"
         >
           <rect
-            x="320"
-            y="296"
-            width="380"
-            height="40"
-            rx="10"
+            x="386"
+            y="254"
+            width="250"
+            height="38"
+            rx="8"
             fill="#0C1A2E"
             stroke={active === 'battery' ? '#3B82F6' : '#234A7A'}
             strokeWidth={active === 'battery' ? 1.8 : 1}
@@ -310,18 +262,18 @@ export function VehicleVisualization({
             return (
               <rect
                 key={i}
-                x={330 + i * 28}
-                y="304"
-                width="20"
-                height="24"
-                rx="4"
+                x={396 + i * 18}
+                y="262"
+                width="14"
+                height="22"
+                rx="3"
                 fill={filled ? '#3B82F6' : '#16243A'}
                 opacity={filled ? 0.75 : 0.7}
               />
             );
           })}
-          <text x="510" y="292" textAnchor="middle" className="fill-volt-300" style={{ fontSize: 9, letterSpacing: '0.18em' }}>
-            48 V Â· 13S PACK
+          <text x="460" y="248" textAnchor="middle" className="fill-volt-300" style={{ fontSize: 9, letterSpacing: '0.18em' }}>
+            48 V · 13S PACK
           </text>
         </g>
 
@@ -335,9 +287,9 @@ export function VehicleVisualization({
           aria-label="Traction motor"
         >
           <circle
-            cx="252"
-            cy="300"
-            r="30"
+            cx="292"
+            cy="232"
+            r="28"
             fill="#0D1726"
             stroke={active === 'motor' ? '#60A5FA' : '#2C4568'}
             strokeWidth={active === 'motor' ? 1.8 : 1}
@@ -347,10 +299,10 @@ export function VehicleVisualization({
             return (
               <line
                 key={i}
-                x1={252 + 11 * Math.cos(a)}
-                y1={300 + 11 * Math.sin(a)}
-                x2={252 + 23 * Math.cos(a)}
-                y2={300 + 23 * Math.sin(a)}
+                x1={292 + 10 * Math.cos(a)}
+                y1={232 + 10 * Math.sin(a)}
+                x2={292 + 21 * Math.cos(a)}
+                y2={232 + 21 * Math.sin(a)}
                 stroke="#60A5FA"
                 strokeWidth="2.2"
                 strokeLinecap="round"
@@ -358,9 +310,9 @@ export function VehicleVisualization({
               />
             );
           })}
-          <circle cx="252" cy="300" r="9" fill="#0A1220" stroke="#60A5FA" strokeWidth="1" opacity="0.9" />
-          <rect x="300" y="272" width="42" height="34" rx="7" fill="#101E33" stroke={active === 'motor' ? '#60A5FA' : '#2C4568'} strokeWidth="1" />
-          <text x="321" y="293" textAnchor="middle" className="fill-volt-300" style={{ fontSize: 8, letterSpacing: '0.1em' }}>
+          <circle cx="292" cy="232" r="8" fill="#0A1220" stroke="#60A5FA" strokeWidth="1" opacity="0.9" />
+          <rect x="334" y="210" width="52" height="44" rx="8" fill="#101E33" stroke={active === 'motor' ? '#60A5FA' : '#2C4568'} strokeWidth="1" />
+          <text x="360" y="237" textAnchor="middle" className="fill-volt-300" style={{ fontSize: 9, letterSpacing: '0.1em' }}>
             INV
           </text>
         </g>
@@ -375,24 +327,24 @@ export function VehicleVisualization({
           aria-label="AI system"
         >
           <rect
-            x="664"
-            y="196"
-            width="72"
+            x="536"
+            y="204"
+            width="96"
             height="44"
             rx="9"
             fill="#101B2E"
             stroke={active === 'ai' ? '#A78BFA' : '#3E3A6E'}
             strokeWidth={active === 'ai' ? 1.8 : 1}
           />
-          <rect x="676" y="208" width="48" height="20" rx="4" fill="#1E1B4B" stroke="#6D5BD0" strokeWidth="0.8" />
-          <text x="700" y="221" textAnchor="middle" className="fill-violet-200" style={{ fontSize: 8.5, letterSpacing: '0.12em' }}>
+          <rect x="548" y="214" width="72" height="24" rx="4" fill="#1E1B4B" stroke="#6D5BD0" strokeWidth="0.8" />
+          <text x="584" y="230" textAnchor="middle" className="fill-violet-200" style={{ fontSize: 9, letterSpacing: '0.12em' }}>
             ESP32-S3
           </text>
           {Array.from({ length: 5 }, (_, i) => (
-            <rect key={`l${i}`} x={666 + i * 15} y="192" width="6" height="4" rx="1" fill="#6D5BD0" opacity="0.85" />
+            <rect key={`l${i}`} x={546 + i * 17} y="199" width="8" height="5" rx="1.5" fill="#6D5BD0" opacity="0.85" />
           ))}
           {Array.from({ length: 5 }, (_, i) => (
-            <rect key={`b${i}`} x={666 + i * 15} y="240" width="6" height="4" rx="1" fill="#6D5BD0" opacity="0.85" />
+            <rect key={`b${i}`} x={546 + i * 17} y="248" width="8" height="5" rx="1.5" fill="#6D5BD0" opacity="0.85" />
           ))}
         </g>
 
@@ -409,25 +361,25 @@ export function VehicleVisualization({
           <g>
             {solarDur ? (
               <>
-                <path id={`${uid}-pSolar`} d="M520 148 L520 292" stroke="#FBBF24" strokeWidth="1.6" fill="none" opacity="0.35" strokeDasharray="3 5" />
+                <path id={`${uid}-pSolar`} d="M500 126 L500 252" stroke="#FBBF24" strokeWidth="1.6" fill="none" opacity="0.35" strokeDasharray="3 5" />
                 <circle r="4" fill="#FDE68A">
-                  <animateMotion dur={`${solarDur}s`} repeatCount="indefinite" path={`M0,0 L0,144`} />
+                  <animateMotion dur={`${solarDur}s`} repeatCount="indefinite" path="M0,0 L0,126" />
                 </circle>
               </>
             ) : null}
             {fcDur ? (
               <>
-                <path d="M809 276 L809 296 L700 316" stroke="#22D3EE" strokeWidth="1.6" fill="none" opacity="0.35" strokeDasharray="3 5" />
+                <path d="M814 236 L636 236 L636 252" stroke="#22D3EE" strokeWidth="1.6" fill="none" opacity="0.35" strokeDasharray="3 5" />
                 <circle r="4" fill="#A5F3FC">
-                  <animateMotion dur={`${fcDur}s`} repeatCount="indefinite" path="M0,0 L0,20 L-109,40 L-109,40" />
+                  <animateMotion dur={`${fcDur}s`} repeatCount="indefinite" path="M0,0 L-178,0 L-178,16" />
                 </circle>
               </>
             ) : null}
             {motorDur ? (
               <>
-                <path d="M320 316 L252 316 L252 306" stroke="#60A5FA" strokeWidth="1.6" fill="none" opacity="0.35" strokeDasharray="3 5" />
+                <path d="M400 254 L400 200 L326 200 L324 232" stroke="#60A5FA" strokeWidth="1.6" fill="none" opacity="0.35" strokeDasharray="3 5" />
                 <circle r="4" fill="#BFDBFE">
-                  <animateMotion dur={`${motorDur}s`} repeatCount="indefinite" path="M0,0 L-68,0 L-68,-10" />
+                  <animateMotion dur={`${motorDur}s`} repeatCount="indefinite" path="M0,0 L0,-54 L-74,-54 L-76,-22" />
                 </circle>
               </>
             ) : null}
@@ -437,8 +389,6 @@ export function VehicleVisualization({
         {/* Hotspots */}
         {VEHICLE_NODES.map((n) => {
           const on = active === n.key;
-          const powerFor =
-            n.key === 'solar' ? solarW : n.key === 'fuelCell' ? fcW : n.key === 'motor' || n.key === 'battery' ? loadW : 0;
           return (
             <g key={n.key} className="cursor-pointer" onClick={() => select(n.key)} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && select(n.key)} role="button" tabIndex={0} aria-label={n.label}>
               <circle cx={n.hotspot.x} cy={n.hotspot.y} r={20} fill="transparent" />
@@ -490,15 +440,14 @@ export function VehicleVisualization({
                   style={{ fontSize: 10, letterSpacing: '0.2em', fontWeight: 600 }}
                 >
                   {n.label}
-                  {n.key === 'battery' && battery ? ` Â· ${fmt(battery.soc, 1, EM)}%` : ''}
-                  {n.key === 'solar' && latest ? ` Â· ${fmtPower(solarW)} ${fmtPowerUnit(solarW)}` : ''}
-                  {n.key === 'motor' && latest ? ` Â· ${fmtPower(loadW)} ${fmtPowerUnit(loadW)}` : ''}
-                  {n.key === 'fuelCell' && latest ? ` Â· ${fmtPower(fcW)} ${fmtPowerUnit(fcW)}` : ''}
-                  {n.key === 'thermal' && temp ? ` Â· ${fmt(temp.max, 1, EM)}Â°C` : ''}
-                  {n.key === 'ai' && latest ? ` Â· ${fmt(latest.ai.anomalyScore, 3, EM)}` : ''}
+                  {n.key === 'battery' && battery ? ` · ${fmt(battery.soc, 1, EM)}%` : ''}
+                  {n.key === 'solar' && latest ? ` · ${fmtPower(solarW)} ${fmtPowerUnit(solarW)}` : ''}
+                  {n.key === 'motor' && latest ? ` · ${fmtPower(loadW)} ${fmtPowerUnit(loadW)}` : ''}
+                  {n.key === 'fuelCell' && latest ? ` · ${fmtPower(fcW)} ${fmtPowerUnit(fcW)}` : ''}
+                  {n.key === 'thermal' && temp ? ` · ${fmt(temp.max, 1, EM)}°C` : ''}
+                  {n.key === 'ai' && latest ? ` · ${fmt(latest.ai.anomalyScore, 3, EM)}` : ''}
                 </text>
               ) : null}
-              {powerFor == null ? null : powerFor > 0 && !compact ? null : null}
             </g>
           );
         })}
@@ -548,10 +497,10 @@ function ThermalProbes({
   uid: string;
 }) {
   const probes = [
-    { key: 'T1' as const, x: 452, y: 160, cx: 452, cy: 160 },
-    { key: 'T2' as const, x: 806, y: 268, cx: 806, cy: 268 },
-    { key: 'T3' as const, x: 288, y: 258, cx: 288, cy: 258 },
-    { key: 'T4' as const, x: 610, y: 288, cx: 610, cy: 288 },
+    { key: 'T1' as const, x: 500, y: 117, cx: 500, cy: 117 },
+    { key: 'T2' as const, x: 836, y: 248, cx: 836, cy: 248 },
+    { key: 'T3' as const, x: 292, y: 250, cx: 292, cy: 250 },
+    { key: 'T4' as const, x: 610, y: 273, cx: 610, cy: 273 },
   ];
   return (
     <g className="cursor-pointer" onClick={onSelect} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onSelect()} role="button" tabIndex={0} aria-label="Thermal sensors">
@@ -564,13 +513,13 @@ function ThermalProbes({
             <circle cx={p.cx} cy={p.cy} r="2" fill={color} />
             {active ? (
               <text x={p.cx} y={p.cy - 14} textAnchor="middle" className="fill-ink-200" style={{ fontSize: 9, letterSpacing: '0.1em' }}>
-                {p.key} {v != null ? `${fmt(v, 1, EM)}Â°` : 'â€”'}
+                {p.key} {v != null ? `${fmt(v, 1, EM)}°` : '—'}
               </text>
             ) : null}
           </g>
         );
       })}
-      <title>{`DS18B20 probes â€” ${probes.map((p) => `${p.key}`).join(' Â· ')}`}</title>
+      <title>{`DS18B20 probes — ${probes.map((p) => `${p.key}`).join(' · ')}`}</title>
       <defs>
         <radialGradient id={`${uid}-probe`}>
           <stop offset="0%" stopColor="#F87171" stopOpacity="0.35" />
