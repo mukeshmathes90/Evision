@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Shared Firebase Realtime Database read layer.
  *
  * No `server-only` guard: this module is imported by the server-side query
@@ -41,6 +41,9 @@ export const FIREBASE_RTDB_URL = resolveUrl();
 /** Candidate paths for a device's telemetry, tried in order on first read. */
 export function layoutCandidates(deviceId: string): string[] {
   return [
+    `ev_monitoring/${deviceId}/history`,
+    `ev_monitoring/${deviceId}`,
+    `ev_monitoring/${deviceId}/frames`,
     `telemetry/${deviceId}`,
     `${deviceId}/telemetry`,
     `devices/${deviceId}/telemetry`,
@@ -70,7 +73,7 @@ export function firebaseUrl(path: string): string {
 export interface ResolvedLayout {
   /** Path (relative to the DB root) that holds the device's frames. */
   root: string;
-  /** `latest` â†’ the node holds one frame; `frames` â†’ a map keyed by push id/ts. */
+  /** `latest` → the node holds one frame; `frames` → a map keyed by push id/ts. */
   kind: 'latest' | 'frames';
 }
 
@@ -436,3 +439,6 @@ export function buildDeviceInfo(deviceId: string, frames: TelemetryReading[]): D
     aiModels: ['soc-prediction', 'range-prediction', 'anomaly-detection'],
   };
 }
+
+
+
